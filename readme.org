@@ -43,6 +43,25 @@ java -jar target/restfultapi-0.0.1-SNAPSHOT.jar
 ./mvnw -Dtest=HelloWorldControllerTest#shouldReturnHelloWorldWhenCallingRootEndpoint test
 #+end_src
 
+* Auto-format Java code before committing (Git hook)
+If you want code to be auto-formatted on every commit, you can use the git code format Maven plugin without changing the POM by invoking it directly.
+
+- Install the pre-commit hook (formats staged Java files automatically):
+#+begin_src sh
+./mvnw com.cosium.code:git-code-format-maven-plugin:install-hooks
+#+end_src
+
+- Format the whole project once (optional):
+#+begin_src sh
+./mvnw com.cosium.code:git-code-format-maven-plugin:format
+#+end_src
+
+- Validate formatting (useful in CI or locally):
+#+begin_src sh
+./mvnw com.cosium.code:git-code-format-maven-plugin:validate
+#+end_src
+
+
 * Endpoints
 ** HelloWorld
 - GET /
