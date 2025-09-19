@@ -11,11 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TinyURLController {
 
+    private final TinyURLService tinyURLService;
+
+    public TinyURLController(TinyURLService tinyURLService) {
+        this.tinyURLService = tinyURLService;
+    }
+
     @PostMapping(value = "/tinyurl")
     public ResponseEntity<CreateShortUrlResponse>
         createShortUrl(@RequestBody CreateShortUrlRequest request) {
-        // Mocked response; real logic will be implemented later.
-        var response = new CreateShortUrlResponse("http://short.url/abc123");
+        String shortCode = tinyURLService.createShortURL(request.getUrl());
+        var response = new CreateShortUrlResponse("http://short.url/" + shortCode);
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(response);
@@ -23,11 +29,10 @@ public class TinyURLController {
 
     @GetMapping(value = "/tinyurl/{shortCode}")
     public ResponseEntity<Void> redirectToLongUrl(@PathVariable String shortCode) {
-        // Mocked redirect; real logic will be implemented later.
-        var hardcodedLongUrl = "https://example.com/original/very/long/url";
+        String longUrl = tinyURLService.getLongUrl(shortCode);
         return ResponseEntity
             .status(HttpStatus.FOUND)
-            .header("Location", hardcodedLongUrl)
+            .header("Location", longUrl)
             .build();
     }
 }
