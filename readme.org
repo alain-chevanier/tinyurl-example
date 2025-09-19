@@ -78,7 +78,7 @@ These endpoints match the current `TinyURLController` and return mocked/hardcode
   - Request body:
     #+begin_example
     {
-      "url": "https://example.com/some/very/long/url"
+      "url": "http://localhost:8080/some/very/long/url"
     }
     #+end_example
   - Response: 201 Created
@@ -86,7 +86,7 @@ These endpoints match the current `TinyURLController` and return mocked/hardcode
   - Response body:
     #+begin_example
     {
-      "shortUrl": "http://short.url/abc123"
+      "shortUrl": "http://localhost:8080/tinyurl/9n80"
     }
     #+end_example
 
@@ -94,7 +94,7 @@ These endpoints match the current `TinyURLController` and return mocked/hardcode
   - Description: Redirects a short code to the original long URL
   - Path variable: shortCode (string)
   - Response: 302 Found
-  - Headers: Location: https://example.com/original/very/long/url
+  - Headers: ~Location: http://localhost:8080/some/very/long/url~
 
 * Try with curl
 You can try the endpoints locally after starting the app:
@@ -106,17 +106,17 @@ You can try the endpoints locally after starting the app:
 #+begin_src sh
 curl -i -X POST "http://localhost:8080/tinyurl" \
   -H "Content-Type: application/json" \
-  -d '{"url":"https://example.com/some/very/long/url"}'
+  -d '{"url":"http://localhost:8080/this/is/a/pretty/long/path/that/we/might/want/to/shorten"}'
 #+end_src
 
 - Retrieve the original URL (see 302 and Location header):
 #+begin_src sh
-curl -i "http://localhost:8080/tinyurl/abc123"
+curl -i "http://localhost:8080/tinyurl/9n80"
 #+end_src
 
 - Follow the redirect automatically (-L):
 #+begin_src sh
-curl -L "http://localhost:8080/tinyurl/abc123"
+curl -i -L "http://localhost:8080/tinyurl/9n80"
 #+end_src
 
 * Notes
