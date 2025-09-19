@@ -3,7 +3,7 @@
 
 * Overview
 A minimal Spring Boot (3.5.x) REST API in Java 17 showcasing:
-- A Hello World controller
+- A Hello World controller to showcase basic endpoints returning plain text and JSON
 - A tinyURL skeleton with endpoints to create a short URL and follow a short code
 
 This repository uses the Maven Wrapper (mvnw), so you do not need a global Maven installation.
@@ -64,12 +64,14 @@ If you want code to be auto-formatted on every commit, you can use the git code 
 
 * Endpoints
 ** HelloWorld
-- GET /
+- ~GET /~
   - Returns: plain text "Hello, World!"
-- GET /random
+- ~GET /random~
   - Returns: application/json with a random message
+- ~GET /this/is/a/pretty/long/path/that/we/might/want/to/shorten~
+  - Returns: a json with ~{"message":"This is a pretty long path that we might want to shorten"}~
 
-** tinyURL (skeleton)
+** TinyURL
 These endpoints match the current `TinyURLController` and return mocked/hardcoded responses. The real logic is intentionally not implemented.
 
 - ~POST /tinyurl~
@@ -96,11 +98,42 @@ These endpoints match the current `TinyURLController` and return mocked/hardcode
   - Response: 302 Found
   - Headers: ~Location: http://localhost:8080/some/very/long/url~
 
-* Try with curl
+* Hit the endpoints
+** Run the server locally
 You can try the endpoints locally after starting the app:
 #+begin_src sh
 ./mvnw spring-boot:run
 #+end_src
+
+Notes:
+- When not specified, the server runs on port 8080
+- The base URL is ~http://localhost:8080~
+
+Use curl, it's usually available on Linux and MacOS. On Windows, you can use PowerShell or WSL.
+
+Notes:
+- You can use tools like Postman or Insomnia if you prefer a GUI over curl
+- In the examples below, ~-i~ is used to include HTTP response headers in the output
+- When not specified, curl uses GET as the default HTTP method
+- For POST requests with a JSON body, ~-H "Content-Type: application/json"~ is used to set the correct content type and ~-d~ is used to provide the JSON data
+
+** HelloWorld
+- Call the root endpoint:
+  #+begin_src sh
+  curl -i "http://localhost:8080/"
+  #+end_src
+
+- Call the random message endpoint:
+  #+begin_src sh
+  curl -i "http://localhost:8080/random"
+  #+end_src
+
+- Call the long path endpoint:
+  #+begin_src sh
+  curl -i "http://localhost:8080/this/is/a/pretty/long/path/that/we/might/want/to/shorten"
+  #+end_src
+
+** TinyURL
 
 - Create a short URL (returns 201 and a JSON with shortUrl):
 #+begin_src sh
@@ -118,8 +151,3 @@ curl -i "http://localhost:8080/tinyurl/9n80"
 #+begin_src sh
 curl -i -L "http://localhost:8080/tinyurl/9n80"
 #+end_src
-
-* Notes
-- Tech stack: Spring Boot 3, Java 17, JUnit 5
-- Default in-memory database (H2) is included but not used by the tinyURL skeleton yet.
-- See AGENTS.md for additional repo conventions and tips.
