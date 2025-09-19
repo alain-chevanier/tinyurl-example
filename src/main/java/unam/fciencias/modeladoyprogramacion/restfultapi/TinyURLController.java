@@ -24,7 +24,7 @@ public class TinyURLController {
     @GetMapping(value = "/tinyurl/{shortCode}")
     public ResponseEntity<Void> redirectToLongUrl(@PathVariable String shortCode) {
         // Mocked redirect; real logic will be implemented later.
-        var hardcodedLongUrl = "https://example.com/original/very/long/url";
+        var hardcodedLongUrl = "http://localhost:8080";
         return ResponseEntity
             .status(HttpStatus.FOUND)
             .header("Location", hardcodedLongUrl)

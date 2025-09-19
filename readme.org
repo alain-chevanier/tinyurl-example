@@ -96,6 +96,29 @@ These endpoints match the current `TinyURLController` and return mocked/hardcode
   - Response: 302 Found
   - Headers: Location: https://example.com/original/very/long/url
 
+* Try with curl
+You can try the endpoints locally after starting the app:
+#+begin_src sh
+./mvnw spring-boot:run
+#+end_src
+
+- Create a short URL (returns 201 and a JSON with shortUrl):
+#+begin_src sh
+curl -i -X POST "http://localhost:8080/tinyurl" \
+  -H "Content-Type: application/json" \
+  -d '{"url":"https://example.com/some/very/long/url"}'
+#+end_src
+
+- Retrieve the original URL (see 302 and Location header):
+#+begin_src sh
+curl -i "http://localhost:8080/tinyurl/abc123"
+#+end_src
+
+- Follow the redirect automatically (-L):
+#+begin_src sh
+curl -L "http://localhost:8080/tinyurl/abc123"
+#+end_src
+
 * Notes
 - Tech stack: Spring Boot 3, Java 17, JUnit 5
 - Default in-memory database (H2) is included but not used by the tinyURL skeleton yet.

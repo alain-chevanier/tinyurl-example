@@ -34,7 +34,7 @@ class TinyURLControllerTest {
 
     @Test
     void shouldRedirectToHardcodedLongUrlWhenAccessingShortUrl() throws Exception {
-        String expectedLongUrl = "https://example.com/original/very/long/url";
+        String expectedLongUrl = "http://localhost:8080";
 
         mockMvc.perform(get("/tinyurl/{shortCode}", "abc123"))
                 .andExpect(status().isFound())
