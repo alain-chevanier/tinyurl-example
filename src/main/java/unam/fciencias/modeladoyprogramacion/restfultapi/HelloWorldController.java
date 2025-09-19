@@ -36,4 +36,11 @@ public class HelloWorldController {
         response.put("message", randomMessage);
         return response;
     }
+
+    @GetMapping("/this/is/a/pretty/long/path/that/we/might/want/to/shorten")
+    public Map<String, String> longURL() {
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "this message should appear at a long URL path");
+        return response;
+    }
 }
