@@ -1,0 +1,83 @@
+#+TITLE: TinyURL
+#+AUTHOR: Alain Chevanier
+
+* Overview
+A minimal Spring Boot (3.5.x) REST API in Java 17 showcasing:
+- A Hello World controller
+- A tinyURL skeleton with endpoints to create a short URL and follow a short code
+
+This repository uses the Maven Wrapper (mvnw), so you do not need a global Maven installation.
+
+* Requirements
+- Java 17 (JDK)
+
+* Build
+#+begin_src sh
+./mvnw clean verify
+#+end_src
+
+* Run (dev)
+#+begin_src sh
+./mvnw spring-boot:run
+#+end_src
+
+* Package and run JAR
+#+begin_src sh
+./mvnw -DskipTests package
+java -jar target/restfultapi-0.0.1-SNAPSHOT.jar
+#+end_src
+
+* Tests
+- All tests:
+#+begin_src sh
+./mvnw test
+#+end_src
+
+- Single test class:
+#+begin_src sh
+./mvnw -Dtest=TinyURLControllerTest test
+#+end_src
+
+- Single test method (example):
+#+begin_src sh
+./mvnw -Dtest=HelloWorldControllerTest#shouldReturnHelloWorldWhenCallingRootEndpoint test
+#+end_src
+
+* Endpoints
+** HelloWorld
+- GET /
+  - Returns: plain text "Hello, World!"
+- GET /random
+  - Returns: application/json with a random message
+
+** tinyURL (skeleton)
+These endpoints match the current `TinyURLController` and return mocked/hardcoded responses. The real logic is intentionally not implemented.
+
+- ~POST /tinyurl~
+  - Description: Create a short URL from a long URL
+  - Request Content-Type: application/json
+  - Request body:
+    #+begin_example
+    {
+      "url": "https://example.com/some/very/long/url"
+    }
+    #+end_example
+  - Response: 201 Created
+  - Response Content-Type: application/json
+  - Response body:
+    #+begin_example
+    {
+      "shortUrl": "http://short.url/abc123"
+    }
+    #+end_example
+
+- ~GET /tinyurl/{shortCode}~
+  - Description: Redirects a short code to the original long URL
+  - Path variable: shortCode (string)
+  - Response: 302 Found
+  - Headers: Location: https://example.com/original/very/long/url
+
+* Notes
+- Tech stack: Spring Boot 3, Java 17, JUnit 5
+- Default in-memory database (H2) is included but not used by the tinyURL skeleton yet.
+- See AGENTS.md for additional repo conventions and tips.

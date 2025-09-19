@@ -27,8 +27,12 @@
 		<url/>
 	</scm>
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>17</java.version>
 		<spring-modulith.version>1.4.1</spring-modulith.version>
+		<lombok.version>1.18.26</lombok.version>
+    <git-code-format-maven-plugin.version>4.2</git-code-format-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -76,6 +80,12 @@
 			<artifactId>spring-modulith-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>provided</scope>
+    </dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -95,6 +105,43 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+        <groupId>com.cosium.code</groupId>
+        <artifactId>git-code-format-maven-plugin</artifactId>
+        <version>${git-code-format-maven-plugin.version}</version>
+        <executions>
+          <!-- On commit, format the modified java files -->
+          <execution>
+            <id>install-formatter-hook</id>
+            <goals>
+              <goal>install-hooks</goal>
+            </goals>
+          </execution>
+          <!-- On Maven verify phase, fail if any file
+          (including unmodified) is badly formatted -->
+          <execution>
+            <id>validate-code-format</id>
+            <goals>
+              <goal>validate-code-format</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <formatterOptions>
+            <!-- Use AOSP style instead of Google Style (4-space indentation). -->
+            <googleJavaFormat.aosp>false</googleJavaFormat.aosp>
+            <!-- Format the javadoc -->
+            <googleJavaFormat.formatJavadoc>true</googleJavaFormat.formatJavadoc>
+            <!-- Fix import order and remove any unused imports, but do no other formatting. -->
+            <googleJavaFormat.fixImportsOnly>false</googleJavaFormat.fixImportsOnly>
+            <!-- Do not fix the import order. Unused imports will still be removed. -->
+            <googleJavaFormat.skipSortingImports>false</googleJavaFormat.skipSortingImports>
+            <!-- Do not remove unused imports. Imports will still be sorted. -->
+            <googleJavaFormat.skipRemovingUnusedImports>false</googleJavaFormat.skipRemovingUnusedImports>
+          </formatterOptions>
+        </configuration>
+      </plugin>
 		</plugins>
 	</build>
 
