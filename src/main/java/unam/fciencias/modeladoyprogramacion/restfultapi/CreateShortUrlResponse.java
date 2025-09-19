@@ -2,9 +2,6 @@ package unam.fciencias.modeladoyprogramacion.restfultapi;
 
 import lombok.Data;
 
-/**
- * Response body for the short URL creation endpoint.
- */
 @Data
 public class CreateShortUrlResponse {
 
