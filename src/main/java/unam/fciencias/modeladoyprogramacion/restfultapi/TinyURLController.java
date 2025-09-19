@@ -15,6 +15,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 public class TinyURLController {
+    private static final int NUMERIC_BASE = 36;
+    private static final String BASE_URL = "http://localhost:8080";
+
     private static long nextId = 450000;
     private static List<TinyURL> shortenedUrls = new ArrayList<>();
 
@@ -30,13 +33,11 @@ public class TinyURLController {
     }
 
     private String createShortURLAux(String longURL) {
-        var baseDomain = "http://localhost:8080";
         long myId = nextId++;
-        String hashedString = Long.toString(myId, 36);
-        String shortURL = baseDomain + "/tinyurl/" + hashedString;
-        var tinyURL = new TinyURL(myId,
-                                  longURL,
-                                  shortURL);
+        // Convert the ID to a base-36 string
+        String hashedId = Long.toString(myId, NUMERIC_BASE);
+        String shortURL = BASE_URL + "/tinyurl/" + hashedId;
+        var tinyURL = new TinyURL(myId, longURL, shortURL);
         shortenedUrls.add(tinyURL);
         return shortURL;
     }
@@ -44,19 +45,17 @@ public class TinyURLController {
     @GetMapping(value = "/tinyurl/{shortCode}")
     public ResponseEntity<Void>
         redirectToLongUrl(@PathVariable String shortCode) {
-
-        long myId = Long.parseLong(shortCode, 36);
+        //Convert the base-36 string back to a long ID
+        long myId = Long.parseLong(shortCode, NUMERIC_BASE);
         var longURL = findURL(myId);
         if (longURL.isPresent()) {
-            return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .header("Location", longURL.get())
-                .build();
+            return ResponseEntity.status(HttpStatus.FOUND)
+                                 .header("Location", longURL.get())
+                                 .build();
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                                               "Short URL not found");
         }
-
     }
 
     private Optional<String> findURL(long tinyURLID) {
