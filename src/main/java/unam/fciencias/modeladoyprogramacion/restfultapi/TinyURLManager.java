@@ -19,8 +19,8 @@ public class TinyURLManager implements TinyURLService {
     private static long nextId = 450000;
     private static List<TinyURL> shortenedUrls = new ArrayList<>();
 
-    public TinyURLManager(@Value("${server.port}") int port,
-                          @Value("${server.address}") String host) {
+    public TinyURLManager(@Value("${server.port:8080}") int port,
+                          @Value("${server.address:localhost}") String host) {
         this.serverPort = port;
         this.serverHost = host;
     }
