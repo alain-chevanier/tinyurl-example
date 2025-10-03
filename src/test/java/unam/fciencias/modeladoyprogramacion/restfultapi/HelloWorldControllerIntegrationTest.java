@@ -10,7 +10,8 @@ import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(properties = { "server.address=localhost", "server.port=7777" },
+                webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class HelloWorldControllerIntegrationTest {
 
     @LocalServerPort
@@ -28,7 +29,7 @@ class HelloWorldControllerIntegrationTest {
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
         // Then
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK); // 200 OK
         assertThat(response.getBody()).isEqualTo("Hello, World!");
     }
 
@@ -54,7 +55,7 @@ class HelloWorldControllerIntegrationTest {
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
         // Then
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND); // 404 Not Found
     }
 
     @Test
