@@ -30,7 +30,7 @@ public class TinyURLManager implements TinyURLService {
         // Check if the long URL has already been shortened
         Optional<TinyURL> existing = findByLongURL(longURL);
         if (existing.isPresent()) {
-            return existing.get().getShortURL();
+            return existing.get().getShortUrl();
         }
 
         // Generate a new ID
@@ -38,7 +38,12 @@ public class TinyURLManager implements TinyURLService {
         // Convert the ID to a base-36 string
         String hashedId = Long.toString(myId, NUMERIC_BASE);
         String shortURL = getBaseURL() + "/tinyurl/" + hashedId;
-        var tinyURL = new TinyURL(myId, longURL, shortURL);
+        var tinyURL = TinyURL.builder()
+            .id(myId)
+            .longUrl(longURL)
+            .shortUrl(shortURL)
+            .build();
+
         shortenedUrls.add(tinyURL);
         return shortURL;
     }

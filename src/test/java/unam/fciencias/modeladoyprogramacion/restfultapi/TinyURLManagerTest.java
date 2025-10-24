@@ -35,7 +35,6 @@ public class TinyURLManagerTest {
         assertThat(shortCode).matches("^[0-9a-z]+$");
     }
 
-    // let's tests that createShortURL generates unique short URLs
     @Test
     public void testCreateShortURLUnique() {
         String longURL = "http://localhost:8080/some/very/long/path1";
@@ -59,7 +58,6 @@ public class TinyURLManagerTest {
     @Test
     public void testFindURLNotFound() {
         var foundURL = service.findURL("nonexistent");
-        // findURL should return an empty Optional
         assertThat(foundURL).isNotPresent();
     }
 }
